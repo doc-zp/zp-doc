@@ -1,13 +1,15 @@
 # Zp365
 
-- [Авторизация][#авторизация]
-- [Обновить токены][#обновить-токены]
-- [Активация пользователя][#активация-пользователя]
-- [Статус активации пользователей][#статус-активации-пользователей]
-- [Выплата][#выплата]
-- [Статус выплаты][#статус-выплаты]
-- [Cотрудники][#сотрудники]
-- [Сущности][#сущности]
+- [Авторизация](#авторизация)
+- [Обновить токены](#обновить-токены)
+- [Активация пользователя](#активация-пользователя)
+- [Статус активации пользователей](#статус-активации-пользователей)
+- [Выплата](#выплата)
+- [Статус выплаты](#статус-выплаты)
+- [Cотрудники](#сотрудники)
+- [Сущности](#сущности)
+- [График работы сотрудников](#график-работы-сотрудников)
+- [Статус выгрузки графиков](#статус-выгрузки-графиков)
 
 
 ## Авторизация
@@ -487,7 +489,91 @@ array of objects as settlement
   ]
 }
 ```
+## График работы сотрудников
 
+### Запрос
+- POST /integration/update/work-schedule/
+
+### Headers
+- Authorization: Bearer `access`
+
+### Body
+
+```json
+{
+  "organization": "string",
+  "employee_external_id": "string",
+  "employee_guid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "year": 9999,
+  "month": 12,
+  "days": [
+    {
+      "date": "2022-11-21T10:58:24.526Z",
+      "hours": "string",
+      "is_holiday": false
+    }
+  ]
+}
+```
+
+### Ответ
+
+```typescript
+{
+    "status": "ok",
+        "keys": [
+        {
+            "id": "119",
+            "employee_guid": "b7f843fd-436e-4e88-880a-c8157e4d0826"
+        }
+    ]
+}
+```
+
+
+## Статус выгрузки графиков
+
+### Запрос
+- POST /integration/update/work-schedule/status
+
+### Headers
+- Authorization: Bearer `access`
+
+### Body
+
+```json
+{
+  "keys": [
+    "528"
+  ]
+}
+```
+
+### Ответ
+
+```typescript
+{//промежуточный
+    id: string | number;
+    data: any;
+    timestamp: number;
+    message?: string;
+}
+{// успешный окончательный
+    id: string | number;
+    data: any;
+    timestamp: number;
+    finishedOn: number | null;
+    message?: string;
+}
+{// ошибочный окончательный
+    id: string | number;
+    data: any;
+    timestamp: number;
+    finishedOn: number | null;
+    failedReason: string;
+    message?: string;
+}
+```
 
 ## Сущности
 
